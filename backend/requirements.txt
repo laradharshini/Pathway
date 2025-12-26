@@ -1,0 +1,17 @@
+flask
+flask-cors
+flask-jwt-extended
+flask-socketio
+python-dotenv
+PyPDF2
+python-docx
+apscheduler
+flask-caching
+flask-limiter
+eventlet
+pymongo
+google-generativeai
+pandas
+numpy
+scikit-learn
+gunicorn
