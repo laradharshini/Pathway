@@ -1,8 +1,8 @@
-# Pathway 🚀
+# Pathway 
 
 Pathway is an AI-powered career growth and skill-bridge platform designed to help professionals navigate their career journey with personalized, data-driven insights. It combines real-time job market analysis with interactive learning experiences.
 
-## ✨ Features
+## Features
 
 - **Personalized Career Pathfinding**: Get a tailored roadmap based on your target role and current skill set.
 - **AI Skill Gap Analysis**: Visualizes your "Market Readiness" and identifies critical skills you need to master.
@@ -12,7 +12,7 @@ Pathway is an AI-powered career growth and skill-bridge platform designed to hel
 - **Interactive Gamification**: Earn XP and level up as you complete challenges and improve your readiness.
 - **Automated Resume Analysis**: Instant ATS scoring and actionable feedback on your resume.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework**: React + Vite
@@ -29,7 +29,7 @@ Pathway is an AI-powered career growth and skill-bridge platform designed to hel
 - **Evaluation Engine**: Scikit-learn (ML for job matching)
 - **Deployment**: Configured for Render (Gunicorn + Unified Service)
 
-## 🚀 Local Setup
+## Local Setup
 
 1. **Clone the repository**
    ```bash
@@ -53,7 +53,7 @@ Pathway is an AI-powered career growth and skill-bridge platform designed to hel
    - Install dependencies: `npm install`
    - Start development server: `npm run dev`
 
-## 📦 Deployment
+## Deployment
 
 This project is optimized for deployment on **Render**. It uses a unified service approach where the Flask backend serves the production-ready React frontend.
 
@@ -61,4 +61,3 @@ This project is optimized for deployment on **Render**. It uses a unified servic
 2. Start in production: `gunicorn --chdir backend app:app`
 
 ---
-Built with ❤️ by [Lara Dharshini](https://github.com/laradharshini)
