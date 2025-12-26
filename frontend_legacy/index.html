@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathway | Career Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- STICKY TOP NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon"><i class="fa-solid fa-shapes"></i></div>
+            Pathway
+        </div>
+
+        <div class="nav-links">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">Jobs</a>
+            <a href="#" class="nav-item">Skill Gaps</a>
+            <a href="#" class="nav-item">Learning</a>
+        </div>
+
+        <div class="nav-user" id="nav-user-area">
+            <!-- Auth content injected here -->
+            <a href="login.html" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;">Login</a>
+        </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="main-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="card profile-card" id="profile-card">
+                <!-- Profile Content Injected Here -->
+                <div style="padding: 2rem;">
+                    <i class="fa-solid fa-circle-notch fa-spin text-sub"></i>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4><i class="fa-solid fa-bullseye text-warning"></i> Quick Goals</h4>
+                <div class="gap-item" style="margin-top: 1rem; background: var(--warning-bg);">
+                    <div class="gap-icon" style="background: white; color: var(--warning);">1</div>
+                    <div style="font-size: 0.875rem;">Update resume with new Python project</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN FEED -->
+        <main class="feed">
+
+            <!-- HERO: READINESS -->
+            <div class="card hero-card" id="hero-card">
+                <div class="readiness-ring">
+                    <span class="readiness-score">--</span>
+                    <span class="readiness-label">Ready</span>
+                </div>
+                <div class="hero-content">
+                    <div class="status-badge">Calculating Role Fit...</div>
+                    <h3>Your Profile Analysis</h3>
+                    <p>We are matching your skills against current market needs for your target role.</p>
+                </div>
+            </div>
+
+            <!-- SECTION: CRITICAL GAPS -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>Critical Skill Gaps</h3>
+                    <a href="#" style="font-size: 0.875rem;">View All</a>
+                </div>
+                <div id="gaps-container">
+                    <!-- Gaps Injected Here -->
+                </div>
+                <p style="font-size: 0.875rem; margin-top: 1rem; color: var(--text-sub);">
+                    <i class="fa-solid fa-circle-info"></i> Closing these gaps could increase your readiness to ~85%
+                </p>
+            </div>
+
+            <!-- SECTION: TOP OPPORTUNITIES -->
+            <h3 class="mb-1">Top Opportunities for You</h3>
+            <div id="jobs-container">
+                <!-- Job Cards Injected Here -->
+                <div class="card" style="text-align: center; color: var(--text-sub);">
+                    Loading intelligence...
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="auth.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Init logic moved to app.js, but simple user check here for Nav
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = Auth.getUser();
+            const navUser = document.getElementById('nav-user-area');
+
+            if (user) {
+                navUser.innerHTML = `
+                    <div style="text-align: right; line-height: 1.2;">
+                        <div style="font-weight: 600; font-size: 0.875rem;">${user.profile?.full_name || 'User'}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-sub);">${user.role}</div>
+                    </div>
+                    <div class="profile-avatar" style="width: 36px; height: 36px; font-size: 1rem; margin: 0;">${(user.profile?.full_name || 'U')[0]}</div>
+                    <button onclick="Auth.logout()" style="border: none; background: none; color: var(--text-sub); cursor: pointer;"><i class="fa-solid fa-sign-out-alt"></i></button>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

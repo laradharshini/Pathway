@@ -1,0 +1,55 @@
+# Environment variables
+.env
+
+# Virtual environments
+.venv
+venv
+env
+
+# Personalization/Data
+data/
+
+# Logs and debug outputs
+*.log
+*.log.*
+*.txt
+*.json
+!package.json
+!composer.json
+!admin_profile.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Local scripts (Cleanup root repo)
+check_models.py
+check_models_detailed.py
+create_sample_resume.py
+debug_chat.py
+debug_matcher.py
+reproduce_issue.py
+reproduce_profile_error.py
+test_chat.py
+test_chat_v2.py
+test_chat_v3.py
+test_chat_v4.py
+test_gemini_key.py
+test_gemini_models.py
+test_new_model.py
+test_recommendations_internal.py
+test_reload.py
+verify_apply_flow.py
+verify_game.py
+verify_gaps.py
+verify_models_clean.py
+verify_role_mapping.py
+verify_simulations.py
+
+# Frontend dependencies and builds
+node_modules/
+dist/
+.DS_Store
+
+# Artifacts
+C:\Users\Lara Dharshini P\.gemini

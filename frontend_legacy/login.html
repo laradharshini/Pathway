@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathway - Welcome</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="auth.js"></script>
+    <style>
+        /* INLINE OVERRIDES FOR "LINKEDIN" PROFESSIONAL THEME using style.css classes */
+        .auth-split-body {
+            background: #f3f2ef;
+            /* LinkedIn Light Grey Body */
+            min-height: 100vh;
+        }
+
+        .brand-logo {
+            color: #0a66c2 !important;
+            /* LinkedIn Blue */
+        }
+
+        .brand-tagline {
+            color: #45474a !important;
+            /* Dark Grey */
+        }
+
+        .btn-primary-wide {
+            background: #0a66c2 !important;
+            /* LinkedIn Blue Button */
+            border-radius: 24px !important;
+            /* Pill shape like LinkedIn */
+            font-weight: 600;
+        }
+
+        .btn-primary-wide:hover {
+            background: #004182 !important;
+        }
+
+        .auth-tab.active {
+            background: transparent !important;
+            color: #0a66c2 !important;
+            border-bottom: 2px solid #0a66c2;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .auth-tab {
+            color: #666;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            /* Prevent jump */
+        }
+
+        .glass-auth-card {
+            background: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+            border: none !important;
+            border-radius: 8px !important;
+            /* Sharper corners */
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .role-option {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-card {
+            border: 1px solid #ddd;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .role-option input:checked+.role-card {
+            border-color: #0a66c2;
+            background: #eef3f8;
+            color: #0a66c2;
+            font-weight: bold;
+        }
+
+        /* User Request: Match accents to Brand Color */
+        .toggle-password,
+        .forgot-link {
+            color: #0a66c2 !important;
+        }
+    </style>
+</head>
+
+<body class="auth-split-body">
+
+    <div class="auth-split-container">
+        <!-- Left Side: Branding -->
+        <div class="auth-brand-section">
+            <h1 class="brand-logo">Pathway</h1>
+            <p class="brand-tagline" style="font-size: 1.2rem;">Your next move, made smarter.</p>
+        </div>
+
+        <!-- Right Side: Auth Card -->
+        <div class="auth-interaction-section">
+            <div class="glass-auth-card">
+
+                <!-- Toggle Tabs -->
+                <div class="auth-tabs" style="background: transparent;">
+                    <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</div>
+                    <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</div>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" required>
+                            <span class="toggle-password" onclick="togglePassword('login-password', this)">SHOW</span>
+                        </div>
+                    </div>
+
+                    <div class="forgot-container">
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary-wide" id="login-btn">
+                        Sign In
+                    </button>
+                </form>
+
+                <!-- SIGNUP FORM (Hidden by default) -->
+                <form id="signup-form" style="display: none;">
+
+                    <!-- Role Selection -->
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <div class="role-selector">
+                            <label class="role-option">
+                                <input type="radio" name="role" value="candidate" checked onchange="toggleRoleFields()">
+                                <div class="role-card">Job Seeker</div>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="role" value="company" onchange="toggleRoleFields()">
+                                <div class="role-card">Company</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Full Name / Company Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password (6+ characters)</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signup-password" required minlength="6">
+                            <span class="toggle-password" onclick="togglePassword('signup-password', this)">SHOW</span>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Fields (Defaults for MVP) -->
+                    <input type="hidden" id="signup-location" value="Remote">
+                    <input type="hidden" id="signup-role" value="Member">
+
+                    <p style="font-size: 0.75rem; color: #666; margin-bottom: 1rem; text-align: center;">By clicking
+                        Agree & Join, you agree to the User Agreement, Privacy Policy, and Cookie Policy.</p>
+
+                    <button type="submit" class="btn-primary-wide" id="signup-btn">
+                        Agree & Join
+                    </button>
+                </form>
+
+                <div id="error-message" class="error-toast" style="display: none;"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const tabLogin = document.getElementById('tab-login');
+            const tabSignup = document.getElementById('tab-signup');
+            const errorMsg = document.getElementById('error-message');
+
+            errorMsg.style.display = 'none';
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                tabLogin.classList.remove('active');
+                tabSignup.classList.add('active');
+            }
+        }
+
+        // Pass Toggle
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "HIDE";
+            } else {
+                input.type = "password";
+                btn.textContent = "SHOW";
+            }
+        }
+
+        // Role Logic (Simplified for UI)
+        function toggleRoleFields() {
+            // Logic to show/hide extra company fields if needed
+            // Keeping it simple for the single page view
+        }
+
+        // --- SUBMISSION HANDLERS ---
+
+        // Login
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            handleAuth('login');
+        });
+
+        // Signup
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            handleAuth('signup');
+        });
+
+        async function handleAuth(type) {
+            const btn = document.getElementById(`${type}-btn`);
+            const errorMsg = document.getElementById('error-message');
+
+            const originalText = btn.innerText;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
+            errorMsg.style.display = 'none';
+
+            try {
+                let url = 'http://localhost:5000/api/auth/login';
+                let body = {};
+
+                if (type === 'login') {
+                    body = {
+                        email: document.getElementById('login-email').value,
+                        password: document.getElementById('login-password').value
+                    };
+                } else {
+                    url = 'http://localhost:5000/api/auth/signup';
+                    const role = document.querySelector('input[name="role"]:checked').value;
+                    body = {
+                        email: document.getElementById('signup-email').value,
+                        password: document.getElementById('signup-password').value,
+                        role: role,
+                        profile: {
+                            full_name: document.getElementById('signup-name').value,
+                            experience_level: 'entry', // Default
+                            target_role: 'Member'
+                        }
+                    };
+                }
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Authentication failed');
+
+                // If signup successful, auto-login
+                if (type === 'signup') {
+                    // Quick re-login to get token
+                    const loginRes = await fetch('http://localhost:5000/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: body.email, password: body.password })
+                    });
+                    const loginData = await loginRes.json();
+                    localStorage.setItem('token', loginData.access_token);
+                    localStorage.setItem('user', JSON.stringify(loginData.user));
+                } else {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                }
+
+                // Redirect
+                window.location.href = 'index.html'; // Simplified for both roles for now
+
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.style.display = 'block';
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
