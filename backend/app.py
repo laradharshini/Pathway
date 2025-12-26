@@ -503,7 +503,7 @@ def submit_assessment():
 @app.route('/api/resume/analyze', methods=['POST'])
 @candidate_required
 def analyze_resume_ai():
-    """AI-powered resume analysis using Claude"""
+    """AI-powered resume analysis supporting multiple providers"""
     try:
         user_id = get_jwt_identity()
         
@@ -519,10 +519,12 @@ def analyze_resume_ai():
         filename = secure_filename(file.filename)
         
         if filename.endswith('.pdf'):
+            import PyPDF2
             pdf_reader = PyPDF2.PdfReader(file)
             for page in pdf_reader.pages:
                 text += page.extract_text() + " "
         elif filename.endswith('.docx'):
+            import docx
             doc = docx.Document(file)
             for para in doc.paragraphs:
                 text += para.text + " "
@@ -533,81 +535,71 @@ def analyze_resume_ai():
         profile = CandidateProfileModel.find_by_user_id(user_id)
         target_role = profile.get('target_role', 'Unknown') if profile else 'Unknown'
 
-        # Call Claude API for analysis
-        import requests
+        # AI Analysis
+        google_api_key = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY', '')
+        anthropic_api_key = os.getenv('ANTHROPIC_API_KEY', '')
         
-        claude_response = requests.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": os.getenv('ANTHROPIC_API_KEY', ''),
-                "anthropic-version": "2023-06-01"
-            },
-            json={
-                "model": "claude-sonnet-4-20250514",
-                "max_tokens": 1500,
-                "messages": [{
-                    "role": "user",
-                    "content": f"""Analyze this resume for a {target_role} position. Provide:
+        analysis = None
 
-1. ATS compatibility score (0-100) - how well it will pass applicant tracking systems
-2. Top 3 strengths (be specific)
-3. Top 3 improvements needed (actionable advice)
-4. Missing keywords for {target_role} roles
-5. Overall recommendation
+        # 1. Try Google Gemini
+        if google_api_key and 'your-google-api-key' not in google_api_key.lower():
+            try:
+                import google.generativeai as genai
+                genai.configure(api_key=google_api_key)
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                prompt = f"""Analyze this resume for a {target_role} position. Provide JSON keys: ats_score (0-100), strengths (list), improvements (list), missing_keywords (list), recommendation (string). Resume: {text[:4000]}"""
+                response = model.generate_content(prompt)
+                import re
+                json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
+                if json_match:
+                    analysis = json.loads(json_match.group())
+                    analysis['is_demo'] = False
+                    app.logger.info("Used Gemini for generic analysis")
+            except Exception as e:
+                app.logger.error(f"Gemini analysis error: {e}")
 
-Resume text:
-{text[:4000]}
+        # 2. Try Anthropic Claude
+        if not analysis and anthropic_api_key and 'your-anthropic-api-key' not in anthropic_api_key.lower():
+            try:
+                import requests
+                resp = requests.post(
+                    "https://api.anthropic.com/v1/messages",
+                    headers={"Content-Type": "application/json", "x-api-key": anthropic_api_key, "anthropic-version": "2023-06-01"},
+                    json={"model": "claude-3-haiku-20240307", "max_tokens": 1000, "messages": [{"role": "user", "content": f"Analyze resume for {target_role} and return JSON: {text[:4000]}"}]},
+                    timeout=15
+                )
+                if resp.status_code == 200:
+                    import re
+                    json_match = re.search(r'\{.*\}', resp.json()['content'][0]['text'], re.DOTALL)
+                    if json_match:
+                        analysis = json.loads(json_match.group())
+                        analysis['is_demo'] = False
+            except Exception as e:
+                app.logger.error(f"Claude analysis error: {e}")
 
-Respond ONLY in valid JSON format with keys: ats_score, strengths, improvements, missing_keywords, recommendation"""
-                }]
-            }
-        )
-        
-        if claude_response.status_code != 200:
-            app.logger.warning(f"Claude API failed: {claude_response.text}. Using fallback analysis.")
-            # Fallback Mock Analysis for Demo
+        # Fallback
+        if not analysis:
             import random
-            mock_score = random.randint(70, 90)
             analysis = {
-                "ats_score": mock_score,
-                "strengths": ["Strong experience metrics", "Clear formatting", "Relevant keywords detected"],
-                "improvements": ["Add more quantitative results", "Expand on soft skills", "Include localized contact info"],
-                "missing_keywords": ["Agile", "JIRA", "System Design"],
-                "recommendation": "Great starting point. Consider tailoring the objective statement to the specific role you are applying for."
+                "ats_score": random.randint(70, 85),
+                "strengths": ["Clear formatting", "Relevant skills"],
+                "improvements": ["Add metrics", "Better keywords"],
+                "missing_keywords": [],
+                "recommendation": "Mock analysis - please provide a valid API key.",
+                "is_demo": True
             }
-        else:
-            response_data = claude_response.json()
-            analysis_text = response_data['content'][0]['text']
-            # Parse JSON
-            import re
-            json_match = re.search(r'\{.*\}', analysis_text, re.DOTALL)
-            if json_match:
-                analysis = json.loads(json_match.group())
-            else:
-                 raise ValueError("Could not extract JSON from AI response")
-        
-        # Send real-time notification
+
+        # Notify
         notify_user(user_id, 'resume_analyzed', {
             'ats_score': analysis.get('ats_score', 0),
-            'message': f"Resume analysis complete! ATS Score: {analysis.get('ats_score', 0)}/100"
+            'message': f"Resume analysis complete! Score: {analysis.get('ats_score', 0)}"
         })
-        
-        return jsonify({
-            'analysis': analysis,
-            'text_preview': text[:500]
-        }), 200
-        
+
+        return jsonify({'analysis': analysis, 'text_preview': text[:500]}), 200
+
     except Exception as e:
-        app.logger.error(f"Resume analysis error: {e}")
-        # Final fallback if even fallback fails
-        return jsonify({'analysis': {
-             "ats_score": 75,
-             "strengths": ["Analysis Engine Unavailable - Using Cached Profile"],
-             "improvements": ["Check API Connectivity"],
-             "missing_keywords": [],
-             "recommendation": "Service is currently in offline mode."
-        }, 'text_preview': "Preview unavailable"}), 200
+        app.logger.error(f"Fatal resume analysis error: {e}")
+        return jsonify({'analysis': {"ats_score": 0, "recommendation": "Error processing resume."}, 'text_preview': ""}), 200
 
 @app.route('/api/jobs/<job_id>/resume_match', methods=['POST'])
 @candidate_required
@@ -649,7 +641,7 @@ def match_resume_to_job(job_id):
 
         # Try AI Analysis (Prefer Gemini for Free Tier, then Claude)
         import requests
-        google_api_key = os.getenv('GOOGLE_API_KEY', '')
+        google_api_key = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY', '')
         anthropic_api_key = os.getenv('ANTHROPIC_API_KEY', '')
         
         app.logger.info(f"Checking AI configuration. Gemini Key: {'Set' if google_api_key else 'Missing'}, Claude Key: {'Set' if anthropic_api_key else 'Missing'}")
