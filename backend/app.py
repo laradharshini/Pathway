@@ -34,20 +34,26 @@ try:
     cred_path = os.getenv('FIREBASE_SERVICE_ACCOUNT_PATH')
     project_id = os.getenv('FIREBASE_PROJECT_ID') or os.getenv('VITE_FIREBASE_PROJECT_ID')
     
+    print(f"DEBUG: Firebase Initialization - cred_path: {cred_path}, project_id: {project_id}")
+    
     if cred_path and os.path.exists(cred_path):
         cred = credentials.Certificate(cred_path)
         firebase_admin.initialize_app(cred)
         print("✅ Firebase Admin Initialized with Service Account")
     elif project_id:
+        # Set project ID in environment as well for some SDK features
+        os.environ['GOOGLE_CLOUD_PROJECT'] = project_id
         # Initialize with just the Project ID (useful for token verification)
         firebase_admin.initialize_app(options={'projectId': project_id})
         print(f"✅ Firebase Admin Initialized with Project ID: {project_id}")
     else:
         # Fallback to default
+        print("⚠️ No Firebase credentials or Project ID found. Attempting Default Credentials (ADC)...")
         firebase_admin.initialize_app()
         print("✅ Firebase Admin Initialized with Default Credentials")
 except Exception as e:
-    print(f"⚠️ Firebase Admin Initialization Warning: {e}")
+    print(f"❌ Firebase Admin Initialization ERROR: {e}")
+    # We don't raise here as the app might still run for non-firebase features
 
 # Initialize Engine
 data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
