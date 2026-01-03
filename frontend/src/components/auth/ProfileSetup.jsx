@@ -6,7 +6,7 @@ import AuthLayout from './AuthLayout';
 import { BriefcaseIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 export default function ProfileSetup() {
-    const { token, user } = useAuth(); // We need token
+    const { token, user, updateUser } = useAuth(); // We need token
     const navigate = useNavigate();
 
     const [targetRole, setTargetRole] = useState('');
@@ -61,7 +61,9 @@ export default function ProfileSetup() {
                 throw new Error(data.error || 'Failed to save profile');
             }
 
-            // Success! Go to dashboard
+            const data = await res.json();
+            // Success! Update global state and go to dashboard
+            updateUser(data.profile);
             navigate('/');
         } catch (err) {
             setError(err.message);

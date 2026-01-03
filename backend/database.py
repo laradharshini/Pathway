@@ -131,6 +131,11 @@ class UserModel:
             # Fallback for Demo Mode (String IDs)
             return users_collection.find_one({'_id': str(user_id)})
 
+    @staticmethod
+    def find_by_firebase_uid(uid):
+        """Find user by Firebase UID"""
+        return users_collection.find_one({'firebase_uid': uid})
+
 # Candidate profile helpers
 class CandidateProfileModel:
     @staticmethod

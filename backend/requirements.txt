@@ -16,3 +16,4 @@ numpy
 scikit-learn
 gunicorn
 bcrypt
+firebase-admin

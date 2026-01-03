@@ -440,7 +440,7 @@ class CareerMatcher:
 if __name__ == "__main__":
     # Test
     from data_engine import DataEngine
-    engine = DataEngine(data_path=r"c:\Users\Lara Dharshini P\portfolio\data")
+    engine = DataEngine(data_path=r"c:\Users\Lara Dharshini P\pathway\data")
     matcher = CareerMatcher(engine)
     matcher.train()
     

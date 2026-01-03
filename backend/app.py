@@ -16,6 +16,8 @@ import docx
 from datetime import datetime
 import json
 from apscheduler.schedulers.background import BackgroundScheduler
+import firebase_admin
+from firebase_admin import credentials, auth as firebase_auth
 
 # Import auth and database
 from auth import hash_password, verify_password, generate_token, candidate_required, company_required
@@ -27,9 +29,27 @@ from database import (
 # Load environment variables
 load_dotenv()
 
+# Initialize Firebase Admin
+try:
+    # Look for service account key in environment or default path
+    cred_path = os.getenv('FIREBASE_SERVICE_ACCOUNT_PATH')
+    if cred_path and os.path.exists(cred_path):
+        cred = credentials.Certificate(cred_path)
+        firebase_admin.initialize_app(cred)
+    else:
+        # Fallback to default app initialization (e.g. via GOOGLE_APPLICATION_CREDENTIALS)
+        firebase_admin.initialize_app()
+    print("✅ Firebase Admin Initialized")
+except Exception as e:
+    print(f"⚠️ Firebase Admin Initialization Failed: {e}. Attempting without credentials (local dev)...")
+    try:
+        firebase_admin.initialize_app()
+    except:
+        pass
+
 # Initialize Engine
 data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend-new', 'dist')
+frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend', 'dist')
 
 app = Flask(__name__, static_folder=frontend_path, static_url_path='')
 CORS(app)
@@ -222,9 +242,99 @@ scheduler.start()
 
 # ========== EXISTING ROUTES (KEPT AS-IS) ==========
 
-@app.route('/')
-def serve_frontend():
-    return app.send_static_file('index.html')
+@app.route('/api/auth/firebase-sync', methods=['POST'])
+def firebase_sync():
+    """
+    Synchronizes Firebase user with MongoDB.
+    Verifies the Firebase ID token and upserts the user in MongoDB.
+    """
+    try:
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            print("DEBUG: No Bearer token")
+            return jsonify({'error': 'No token provided'}), 401
+        
+        id_token = auth_header.split('Bearer ')[1]
+        
+        # Verify Firebase Token (Strictly requires Service Account setup)
+        decoded_token = firebase_auth.verify_id_token(id_token)
+        uid = decoded_token['uid']
+        email = decoded_token.get('email')
+        name = decoded_token.get('name')
+        
+        if not email:
+            return jsonify({'error': 'Email not found in Firebase token'}), 401
+            
+        # 1. Find or Create User in MongoDB
+        user = UserModel.find_by_firebase_uid(uid)
+        if not user:
+            # Check if user exists by email (link Firebase UID to existing account)
+            user = UserModel.find_by_email(email)
+            if user:
+                # Update existing user with Firebase UID
+                from database import users_collection
+                users_collection.update_one(
+                    {'_id': user['_id']},
+                    {'$set': {'firebase_uid': uid}}
+                )
+            else:
+                # Create new user in MongoDB
+                import secrets
+                dummy_pw = hash_password(secrets.token_hex(16))
+                role = 'candidate' # Default role
+                user = UserModel.create(email, dummy_pw, role)
+                
+                # Update with Firebase UID
+                from database import users_collection
+                users_collection.update_one(
+                    {'_id': user['_id']},
+                    {'$set': {'firebase_uid': uid}}
+                )
+                
+                # Create Profile immediately
+                CandidateProfileModel.create(
+                    user_id=str(user['_id']),
+                    full_name=name or 'Firebase User',
+                    experience_level='entry',
+                    target_role='Software Engineer', # Default
+                    location='Remote'
+                )
+        
+        # Double check user exists now
+        if not user:
+             return jsonify({'error': 'Failed to create/find user'}), 500
+
+        # 2. Get Profile info to return a complete user object
+        user_data = {
+            'id': str(user['_id']),
+            'email': user['email'],
+            'role': user.get('role', 'candidate'),
+            'full_name': name or user.get('email', '').split('@')[0]
+        }
+        
+        if user_data['role'] == 'candidate':
+            from database import CandidateProfileModel
+            profile = CandidateProfileModel.find_by_user_id(str(user['_id']))
+            if profile:
+                # Merge profile fields into user_data
+                for field in ['full_name', 'target_role', 'experience_level', 'location', 'skills', 'bio', 'avatar_url']:
+                    if field in profile:
+                        user_data[field] = profile[field]
+        
+        # Generate backend token for subsequent requests
+        access_token = generate_token(str(user['_id']), user_data['role'])
+        
+        return jsonify({
+            'message': 'Sync successful',
+            'access_token': access_token,
+            'user': user_data
+        }), 200
+
+    except Exception as e:
+        print(f"❌ Firebase Sync Fatal Error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/auth/signup', methods=['POST'])
 def signup():
