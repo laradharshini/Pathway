@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/map-pin.svg" width="32" height="32" /> Pathway 🚀
+# Pathway
 
 > **Empowering professionals with AI-driven career pathfinding and skill-gap intelligence.**
 
@@ -11,24 +11,22 @@
 
 Pathway is a data-driven career growth platform that helps users bridge the gap between their current skills and their dream roles. By leveraging **Google Gemini AI** and real-time market data, Pathway provides actionable roadmaps, interactive learning labs, and AI-powered resume analysis.
 
----
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 | :--- | :--- |
-| **🔐 Secure Auth** | Multi-provider login (Google, Email) via **Firebase Authentication**. |
-| **🎯 Career Pathfinding** | Tailored roadmaps based on your target role and current expertise. |
-| **📊 Skill Gap Analysis** | Interactive visualizations of your "Market Readiness" score. |
-| **🧪 AI Skills Lab** | Real-time coding challenges with AI hints and adaptive feedback. |
-| **🤖 Pathway Assistant** | A persistent AI coach powered by Gemini for 24/7 career guidance. |
-| **🎮 Skill Simulations** | Realistic, scenario-based evaluations (SQL, React, Algorithms). |
-| **📄 AI Resume Analyzer** | Instant ATS scoring and keyword suggestions for your CV. |
-| **🏆 XP & Gamification** | Level up your profile as you master new skills and challenges. |
+| **Secure Auth** | Multi-provider login (Google, Email) via **Firebase Authentication**. |
+| **Career Pathfinding** | Tailored roadmaps based on your target role and current expertise. |
+| **Skill Gap Analysis** | Interactive visualizations of your "Market Readiness" score. |
+| **AI Skills Lab** | Real-time coding challenges with AI hints and adaptive feedback. |
+| **Pathway Assistant** | A persistent AI coach powered by Gemini for 24/7 career guidance. |
+| **Skill Simulations** | Realistic, scenario-based evaluations (SQL, React, Algorithms). |
+| **AI Resume Analyzer** | Instant ATS scoring and keyword suggestions for your CV. |
+| **XP & Gamification** | Level up your profile as you master new skills and challenges. |
 
----
 
-## 🏗 System Architecture
+## System Architecture
 
 ```mermaid
 graph TD
@@ -41,43 +39,38 @@ graph TD
     Backend <--> ML[Scikit-Learn \n Matcher Engine]
 ```
 
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 Pathway/
-├── 🧠 backend/           # Flask API, Socket.IO, Intelligence Engines
-│   ├── app.py            # Main application entry point
-│   ├── matcher.py        # ML-based Career Matching logic
-│   ├── ai_lab.py         # AI Challenge generation
-│   └── requirements.txt  # Python environment dependencies
-├── 🎨 frontend/          # React v18 + Vite (Premium UI)
-│   ├── src/              # Components, Contexts, Hooks
-│   ├── public/           # Static assets & icons
-│   └── .env.example      # Environment variable template
-├── 📦 frontend_legacy/   # Legacy assets & styles
-└── 📄 README.md          # Project documentation
+├── backend/
+│   ├── app.py
+│   ├── matcher.py
+│   ├── ai_lab.py
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── .env
+└── README.md
 ```
 
----
+## Local Setup
 
-## 🚀 Local Setup
-
-### 🛠 Prerequisites
+### 1. Prerequisites
 - **Python 3.9+**
 - **Node.js 18+**
 - **MongoDB Atlas** (or local instance)
 - **Firebase Project** (with Auth enabled)
 - **Google Gemini API Key**
 
-### 1️⃣ Clone the Repository
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/laradharshini/Pathway.git
 cd Pathway
 ```
 
-### 2️⃣ Backend Configuration
+### 3. Backend Configuration
 ```bash
 # Navigate to root
 pip install -r backend/requirements.txt
@@ -90,7 +83,7 @@ pip install -r backend/requirements.txt
 python backend/app.py
 ```
 
-### 3️⃣ Frontend Configuration
+### 4. Frontend Configuration
 ```bash
 cd frontend
 npm install
@@ -103,19 +96,13 @@ npm install
 npm run dev
 ```
 
----
-
-## 🌐 Deployment (Render)
+## Deployment (Render)
 
 Pathway is configured for **Unified Deployment**. The backend serves the optimized React visual build.
 
 1. **Build Frontend**: `cd frontend && npm install && npm run build`
 2. **Launch Backend**: `gunicorn --chdir backend app:app`
 
----
-
 > [!WARNING]
 > **Security Reminder**: Never commit your `.env` files. Ensure you have added your secrets to the Render Environment Variables tab before deploying.
 
----
-Created with ❤️ by **[Lara Dharshini](https://github.com/laradharshini)**
