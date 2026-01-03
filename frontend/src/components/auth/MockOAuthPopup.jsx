@@ -23,7 +23,6 @@ const MockOAuthPopup = () => {
     };
 
     const mockAccounts = [
-        { name: 'Lara Dharshini', email: 'lara@example.com', img: 'https://ui-avatars.com/api/?name=Lara+Dharshini&background=random' },
         { name: 'Demo User', email: 'demo@example.com', img: 'https://ui-avatars.com/api/?name=Demo+User&background=random' }
     ];
 
