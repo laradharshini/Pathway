@@ -1,109 +1,116 @@
-# Pathway 🚀
+# <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/map-pin.svg" width="32" height="32" /> Pathway 🚀
 
-Pathway is an AI-powered career growth and skill-bridge platform designed to help professionals navigate their career journey with personalized, data-driven insights. It combines real-time job market analysis with interactive learning experiences.
+> **Empowering professionals with AI-driven career pathfinding and skill-gap intelligence.**
 
----
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 
-## 🌟 Features
-
-- **Personalized Career Pathfinding**: Get a tailored roadmap based on your target role and current skill set.
-- **AI Skill Gap Analysis**: Visualizes your "Market Readiness" and identifies critical skills you need to master.
-- **AI Skills Lab**: Hands-on coding challenges with real-time AI feedback and hints.
-- **Pathway Assistant**: A persistent AI career coach powered by Google Gemini to answer your professional development questions.
-- **Career Simulations**: Realistic, scenario-based evaluations (e.g., "SQL Performance Audit", "React Optimization") to test your problem-solving skills.
-- **Interactive Gamification**: Earn XP and level up as you complete challenges and improve your readiness.
-- **Automated Resume Analysis**: Instant ATS scoring and actionable feedback on your resume.
+Pathway is a data-driven career growth platform that helps users bridge the gap between their current skills and their dream roles. By leveraging **Google Gemini AI** and real-time market data, Pathway provides actionable roadmaps, interactive learning labs, and AI-powered resume analysis.
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Key Features
 
-### Frontend
-- **Framework**: [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **State Management**: React Context API
+| Feature | Description |
+| :--- | :--- |
+| **🎯 Career Pathfinding** | Tailored roadmaps based on your target role and current expertise. |
+| **📊 Skill Gap Analysis** | Interactive visualizations of your "Market Readiness" score. |
+| **🧪 AI Skills Lab** | Real-time coding challenges with AI hints and adaptive feedback. |
+| **🤖 Pathway Assistant** | A persistent AI coach powered by Gemini for 24/7 career guidance. |
+| **🎮 Skill Simulations** | Realistic, scenario-based evaluations (SQL, React, Algorithms). |
+| **📄 AI Resume Analyzer** | Instant ATS scoring and keyword suggestions for your CV. |
+| **🏆 XP & Gamification** | Level up your profile as you master new skills and challenges. |
 
-### Backend
-- **Framework**: [Flask](https://flask.palletsprojects.com/)
-- **AI Integration**: [Google Gemini API](https://ai.google.dev/)
-- **Database**: [MongoDB](https://www.mongodb.com/)
-- **Real-time Connectivity**: [Flask-SocketIO](https://flask-socketio.readthedocs.io/)
-- **Evaluation Engine**: Scikit-learn (ML for job matching)
-- **Deployment**: [Render](https://render.com/) (Gunicorn + Unified Service)
+---
+
+## 🏗 System Architecture
+
+```mermaid
+graph TD
+    User((User)) <--> Frontend[React + Vite + Tailwind]
+    Frontend <--> Backend[Flask API + Socket.IO]
+    Backend <--> DB[(MongoDB Atlas)]
+    Backend <--> AI_Engine[Google Gemini \n / Claude AI]
+    Backend <--> ML[Scikit-Learn \n Matcher Engine]
+```
 
 ---
 
 ## 📂 Project Structure
 
-```text
+```bash
 Pathway/
-├── backend/                # Flask Backend
-│   ├── app.py              # Main Application Entry
-│   ├── requirements.txt    # Python Dependencies
-│   └── admin_profile.py    # Admin Profile Logic
-├── frontend/               # React Frontend (New)
-│   ├── src/                # Component & Logic Source
-│   ├── public/             # Static Assets
-│   └── package.json        # Frontend Dependencies
-├── frontend_legacy/        # Legacy Styles and Assets
-├── dashboard.html          # Legacy Dashboard View
-└── README.md               # You are here!
+├── 🧠 backend/           # Flask API, Socket.IO, Intelligence Engines
+│   ├── app.py            # Main application entry point
+│   ├── matcher.py        # ML-based Career Matching logic
+│   ├── ai_lab.py         # AI Challenge generation
+│   └── requirements.txt  # Python environment dependencies
+├── 🎨 frontend/          # React v18 + Vite (Premium UI)
+│   ├── src/              # Components, Contexts, Hooks
+│   ├── public/           # Static assets & icons
+│   └── .env.example      # Environment variable template
+├── 📦 frontend_legacy/   # Legacy assets & styles
+└── 📄 README.md          # Project documentation
 ```
 
 ---
 
 ## 🚀 Local Setup
 
-### 1. Clone the repository
+### 🛠 Prerequisites
+- **Python 3.9+**
+- **Node.js 18+**
+- **MongoDB Atlas** (or local instance)
+- **Google Gemini API Key**
+
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/laradharshini/Pathway.git
 cd Pathway
 ```
 
-### 2. Backend Configuration
-1. Navigate to the root.
-2. Install dependencies:
-   ```bash
-   pip install -r backend/requirements.txt
-   ```
-3. Create a `.env` file in the root with:
-   ```env
-   JWT_SECRET_KEY=your_secret_key
-   MONGO_URI=your_mongodb_uri
-   GEMINI_API_KEY=your_gemini_api_key
-   ```
-4. Start the backend:
-   ```bash
-   python backend/app.py
-   ```
+### 2️⃣ Backend Configuration
+```bash
+# Navigate to root
+pip install -r backend/requirements.txt
 
-### 3. Frontend Configuration
-1. Navigate to `frontend/`.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start development server:
-   ```bash
-   npm run dev
-   ```
+# Create .env in root
+# JWT_SECRET_KEY=...
+# MONGO_URI=...
+# GEMINI_API_KEY=...
+
+python backend/app.py
+```
+
+### 3️⃣ Frontend Configuration
+```bash
+cd frontend
+npm install
+
+# Create .env in frontend/
+# VITE_FIREBASE_API_KEY=...
+# VITE_FIREBASE_AUTH_DOMAIN=...
+# (See .env.example for more)
+
+npm run dev
+```
 
 ---
 
-## 🌐 Deployment
+## 🌐 Deployment (Render)
 
-This project is optimized for deployment on **Render**. It uses a unified service approach where the Flask backend serves the production-ready React frontend.
+Pathway is configured for **Unified Deployment**. The backend serves the optimized React visual build.
 
-1. **Build the frontend**: 
-   ```bash
-   cd frontend && npm install && npm run build
-   ```
-2. **Start in production**: 
-   ```bash
-   gunicorn --chdir backend app:app
-   ```
+1. **Build Frontend**: `cd frontend && npm install && npm run build`
+2. **Launch Backend**: `gunicorn --chdir backend app:app`
 
 ---
-Made with ❤️ by [Lara Dharshini](https://github.com/laradharshini)
+
+> [!WARNING]
+> **Security Reminder**: Never commit your `.env` files. Ensure you have added your secrets to the Render Environment Variables tab before deploying.
+
+---
+Created with ❤️ by **[Lara Dharshini](https://github.com/laradharshini)**
