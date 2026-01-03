@@ -16,8 +16,6 @@
 
 Pathway is a state-of-the-art career growth platform designed to bridge the gap between human potential and market demand. By integrating **Google Gemini** & **Anthropic Claude** with proprietary **ML Matcher Engines**, Pathway provides an end-to-end ecosystem for career discovery, skill validation, and job readiness.
 
----
-
 > [!TIP]
 > **Infrastructure as Code**: This project is configured with a `render.yaml` blueprint. Any changes to the build or start commands made in GitHub will automatically sync to Render.
 
@@ -36,7 +34,7 @@ Pathway is a state-of-the-art career growth platform designed to bridge the gap 
 | **XP & Gamification** | Level up your profile as you master new skills and challenges. |
 
 
-## 🛠 Technologies & Tools
+## Technologies & Tools
 
 ### **Frontend**
 - **Core**: React 18, Vite
@@ -52,14 +50,12 @@ Pathway is a state-of-the-art career growth platform designed to bridge the gap 
 - **Data**: PyPDF2 (Resume parsing), Pandas/NumPy (Data processing)
 - **Database**: MongoDB Atlas
 
-### **DevOps & Deployment**
+### **Deployment**
 - **Hosting**: Render (Unified Web Service)
 - **CI/CD**: Render Blueprint (Infrastructure as Code)
 - **Security**: JWT (Backend sessions), Environment Variables (.env)
 
----
-
-## 🏗 System Architecture
+## System Architecture
 
 ```mermaid
 graph TD
@@ -72,26 +68,22 @@ graph TD
     Backend <--> ML[Scikit-Learn \n Matcher Engine]
 ```
 
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 Pathway/
-├── 🧠 backend/           # Flask API, Socket.IO, Intelligence Engines
-│   ├── app.py            # Main entry point & API routes
-│   ├── matcher.py        # ML-based Career Matching logic
-│   ├── ai_lab.py         # AI Challenge generation (Claude)
-│   ├── simulation_engine.py # Evaluation logic for simulations
-│   └── requirements.txt  # Python dependencies
-├── 🎨 frontend/          # React v18 + Vite (Premium UI)
-│   ├── src/              # Logic, Components, Contexts
-│   ├── public/           # Static assets
-│   ├── .env.example      # Template for environment variables
-│   └── .env              # Local secrets (ignored by Git)
-├── 📦 frontend_legacy/   # Legacy assets & styles
-├── 📄 render.yaml        # Infrastructure as Code (Blueprint)
-└── 📄 README.md          # Project documentation
+├── backend/
+│   ├── app.py
+│   ├── matcher.py
+│   ├── ai_lab.py
+│   ├── simulation_engine.py
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── .env
+├── render.yaml
+└── README.md
 ```
 
 ## Local Setup
