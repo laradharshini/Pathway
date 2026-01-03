@@ -1,8 +1,8 @@
-# Pathway Frontend 🌐
+# Pathway Frontend
 
 Custom React frontend for the Pathway career platform, built with Vite and Tailwind CSS.
 
-## ✨ Key Components
+## Key Components
 
 - **Dashboard**: Overview of career progress and readiness.
 - **Career Path**: Visual roadmap of skills and milestones.
@@ -10,7 +10,7 @@ Custom React frontend for the Pathway career platform, built with Vite and Tailw
 - **AI Lab**: Interactive coding and problem-solving playground.
 - **Assistant**: Integrated AI chat for career guidance.
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Install dependencies**:
    ```bash
@@ -27,7 +27,7 @@ Custom React frontend for the Pathway career platform, built with Vite and Tailw
    npm run build
    ```
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **React 18**
 - **Vite**
@@ -35,5 +35,4 @@ Custom React frontend for the Pathway career platform, built with Vite and Tailw
 - **Framer Motion** (Animations)
 - **Lucide React** (Icons)
 
----
 Back to [Root README](../README.md)
