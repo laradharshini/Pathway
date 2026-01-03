@@ -36,7 +36,30 @@ Pathway is a state-of-the-art career growth platform designed to bridge the gap 
 | **XP & Gamification** | Level up your profile as you master new skills and challenges. |
 
 
-## System Architecture
+## 🛠 Technologies & Tools
+
+### **Frontend**
+- **Core**: React 18, Vite
+- **Styling**: Tailwind CSS, Framer Motion (Animations)
+- **Icons**: Lucide React, Heroicons
+- **Authentication**: Firebase Authentication
+- **State Management**: React Context API
+
+### **Backend**
+- **Language**: Python 3.11+
+- **Framework**: Flask, Flask-CORS, Flask-SocketIO
+- **AI/ML**: Google Gemini AI, Anthropic Claude AI, Scikit-Learn (TF-IDF Matcher)
+- **Data**: PyPDF2 (Resume parsing), Pandas/NumPy (Data processing)
+- **Database**: MongoDB Atlas
+
+### **DevOps & Deployment**
+- **Hosting**: Render (Unified Web Service)
+- **CI/CD**: Render Blueprint (Infrastructure as Code)
+- **Security**: JWT (Backend sessions), Environment Variables (.env)
+
+---
+
+## 🏗 System Architecture
 
 ```mermaid
 graph TD
@@ -49,20 +72,26 @@ graph TD
     Backend <--> ML[Scikit-Learn \n Matcher Engine]
 ```
 
-## Project Structure
+---
+
+## 📂 Project Structure
 
 ```bash
 Pathway/
-├── backend/
-│   ├── app.py
-│   ├── matcher.py
-│   ├── ai_lab.py
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── .env
-└── README.md
+├── 🧠 backend/           # Flask API, Socket.IO, Intelligence Engines
+│   ├── app.py            # Main entry point & API routes
+│   ├── matcher.py        # ML-based Career Matching logic
+│   ├── ai_lab.py         # AI Challenge generation (Claude)
+│   ├── simulation_engine.py # Evaluation logic for simulations
+│   └── requirements.txt  # Python dependencies
+├── 🎨 frontend/          # React v18 + Vite (Premium UI)
+│   ├── src/              # Logic, Components, Contexts
+│   ├── public/           # Static assets
+│   ├── .env.example      # Template for environment variables
+│   └── .env              # Local secrets (ignored by Git)
+├── 📦 frontend_legacy/   # Legacy assets & styles
+├── 📄 render.yaml        # Infrastructure as Code (Blueprint)
+└── 📄 README.md          # Project documentation
 ```
 
 ## Local Setup
