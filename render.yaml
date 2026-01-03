@@ -11,6 +11,8 @@ services:
         value: 18.17.0
       - key: FIREBASE_PROJECT_ID
         sync: false # Requires manual set in Render Dashboard
+      - key: GOOGLE_CLOUD_PROJECT
+        sync: false # Set this to the same value as FIREBASE_PROJECT_ID
       - key: MONGO_URI
         sync: false
       - key: GEMINI_API_KEY
