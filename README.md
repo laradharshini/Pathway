@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/map-pin.svg" width="32" height="32" /> Pathway
+# Pathway
 
 > **Empowering professionals with AI-driven career pathfinding and skill-gap intelligence.**
 
@@ -57,20 +57,20 @@ Pathway/
 
 ## Local Setup
 
-### Prerequisites
+### 1. Prerequisites
 - **Python 3.9+**
 - **Node.js 18+**
 - **MongoDB Atlas** (or local instance)
 - **Firebase Project** (with Auth enabled)
 - **Google Gemini API Key**
 
-### Clone the Repository
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/laradharshini/Pathway.git
 cd Pathway
 ```
 
-### Backend Configuration
+### 3. Backend Configuration
 ```bash
 # Navigate to root
 pip install -r backend/requirements.txt
@@ -83,7 +83,7 @@ pip install -r backend/requirements.txt
 python backend/app.py
 ```
 
-### Frontend Configuration
+### 4. Frontend Configuration
 ```bash
 cd frontend
 npm install
@@ -95,8 +95,6 @@ npm install
 
 npm run dev
 ```
-
----
 
 ## Deployment (Render)
 
