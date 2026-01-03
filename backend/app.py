@@ -31,21 +31,23 @@ load_dotenv()
 
 # Initialize Firebase Admin
 try:
-    # Look for service account key in environment or default path
     cred_path = os.getenv('FIREBASE_SERVICE_ACCOUNT_PATH')
+    project_id = os.getenv('FIREBASE_PROJECT_ID') or os.getenv('VITE_FIREBASE_PROJECT_ID')
+    
     if cred_path and os.path.exists(cred_path):
         cred = credentials.Certificate(cred_path)
         firebase_admin.initialize_app(cred)
+        print("✅ Firebase Admin Initialized with Service Account")
+    elif project_id:
+        # Initialize with just the Project ID (useful for token verification)
+        firebase_admin.initialize_app(options={'projectId': project_id})
+        print(f"✅ Firebase Admin Initialized with Project ID: {project_id}")
     else:
-        # Fallback to default app initialization (e.g. via GOOGLE_APPLICATION_CREDENTIALS)
+        # Fallback to default
         firebase_admin.initialize_app()
-    print("✅ Firebase Admin Initialized")
+        print("✅ Firebase Admin Initialized with Default Credentials")
 except Exception as e:
-    print(f"⚠️ Firebase Admin Initialization Failed: {e}. Attempting without credentials (local dev)...")
-    try:
-        firebase_admin.initialize_app()
-    except:
-        pass
+    print(f"⚠️ Firebase Admin Initialization Warning: {e}")
 
 # Initialize Engine
 data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
