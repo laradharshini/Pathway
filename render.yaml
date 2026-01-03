@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: pathway
+    runtime: python
+    buildCommand: "pip install -r backend/requirements.txt && cd frontend && npm install && npm run build"
+    startCommand: "gunicorn --chdir backend app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.6
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: FIREBASE_PROJECT_ID
+        sync: false # Requires manual set in Render Dashboard
+      - key: MONGO_URI
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
