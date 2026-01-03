@@ -4,6 +4,7 @@
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Gemini AI](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 [![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
@@ -16,6 +17,7 @@ Pathway is a data-driven career growth platform that helps users bridge the gap 
 
 | Feature | Description |
 | :--- | :--- |
+| **🔐 Secure Auth** | Multi-provider login (Google, Email) via **Firebase Authentication**. |
 | **🎯 Career Pathfinding** | Tailored roadmaps based on your target role and current expertise. |
 | **📊 Skill Gap Analysis** | Interactive visualizations of your "Market Readiness" score. |
 | **🧪 AI Skills Lab** | Real-time coding challenges with AI hints and adaptive feedback. |
@@ -31,7 +33,9 @@ Pathway is a data-driven career growth platform that helps users bridge the gap 
 ```mermaid
 graph TD
     User((User)) <--> Frontend[React + Vite + Tailwind]
+    Frontend <--> Auth[Firebase Auth]
     Frontend <--> Backend[Flask API + Socket.IO]
+    Backend <--> Auth
     Backend <--> DB[(MongoDB Atlas)]
     Backend <--> AI_Engine[Google Gemini \n / Claude AI]
     Backend <--> ML[Scikit-Learn \n Matcher Engine]
@@ -64,6 +68,7 @@ Pathway/
 - **Python 3.9+**
 - **Node.js 18+**
 - **MongoDB Atlas** (or local instance)
+- **Firebase Project** (with Auth enabled)
 - **Google Gemini API Key**
 
 ### 1️⃣ Clone the Repository
