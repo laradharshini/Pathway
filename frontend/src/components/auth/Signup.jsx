@@ -19,7 +19,7 @@ export default function Signup() {
         setError('');
         setIsVerifying(true);
         try {
-            await signup(email, password);
+            await signup(email, password, name);
             // On successful signup, AuthContext's onAuthStateChanged handles synchronization
             navigate('/profile-setup');
         } catch (err) {

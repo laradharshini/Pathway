@@ -5,7 +5,8 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    getIdToken
+    getIdToken,
+    updateProfile
 } from 'firebase/auth';
 
 const AuthContext = createContext(null);
@@ -68,8 +69,12 @@ export const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
 
-    const signup = async (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password);
+    const signup = async (email, password, name) => {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        if (name) {
+            await updateProfile(result.user, { displayName: name });
+        }
+        return result;
     };
 
     const logout = () => {
