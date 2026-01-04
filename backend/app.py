@@ -321,7 +321,6 @@ def firebase_sync():
         }
         
         if user_data['role'] == 'candidate':
-            from database import CandidateProfileModel
             profile = CandidateProfileModel.find_by_user_id(str(user['_id']))
             if profile:
                 # Merge profile fields into user_data
@@ -1335,7 +1334,6 @@ def apply_to_job(job_id):
         # If not found in recommendations, try fetching directly
         if not job_match:
             try:
-                from database import JobModel
                 job_doc = JobModel.find_by_id(job_id)
                 if job_doc:
                     single_matches = matcher.match_user(profile_data, live_jobs=[job_doc])
@@ -1392,9 +1390,7 @@ def analyze():
     Analyze user profile and match with jobs.
     """
     try:
-        from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
-        
-        # Try auth
+        # Try auth using global imports
         user_id = None
         try:
             verify_jwt_in_request(optional=True)
