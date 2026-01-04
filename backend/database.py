@@ -86,14 +86,15 @@ except Exception as e:
             if doc and '$set' in update:
                 doc.update(update['$set'])
 
-    class DemoDB:
-        def __init__(self):
-            self.collections = {}
-        def __getitem__(self, name):
-            if name not in self.collections: self.collections[name] = DemoCollection()
-            return self.collections[name]
+    if USE_DEMO_MODE:
+        class DemoDB:
+            def __init__(self):
+                self.collections = {}
+            def __getitem__(self, name):
+                if name not in self.collections: self.collections[name] = DemoCollection()
+                return self.collections[name]
 
-    db = DemoDB()
+        db = DemoDB()
 
 # Collections (Identical access for both modes)
 users_collection = db['users']
