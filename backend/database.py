@@ -26,10 +26,11 @@ except Exception as e:
         try:
             print("🔄 Attempting to auto-escape MongoDB credentials...")
             from urllib.parse import quote_plus
-            # Basic attempt to split and re-encode
+            # Robust split: Find the last '@' to separate auth from host
             if '@' in MONGO_URI and '://' in MONGO_URI:
                 prefix, rest = MONGO_URI.split('://', 1)
-                auth, server = rest.split('@', 1)
+                # Split at the LAST @ to avoid confusion with passwords containing @
+                auth, server = rest.rsplit('@', 1)
                 if ':' in auth:
                     user, pwd = auth.split(':', 1)
                     MONGO_URI = f"{prefix}://{quote_plus(user)}:{quote_plus(pwd)}@{server}"

@@ -32,23 +32,33 @@ load_dotenv()
 # Initialize Firebase Admin
 try:
     cred_path = os.getenv('FIREBASE_SERVICE_ACCOUNT_PATH')
+    cred_json = os.getenv('FIREBASE_SERVICE_ACCOUNT_JSON')
     project_id = os.getenv('FIREBASE_PROJECT_ID') or os.getenv('VITE_FIREBASE_PROJECT_ID')
     
-    print(f"DEBUG: Firebase Initialization - cred_path: {cred_path}, project_id: {project_id}")
+    print(f"DEBUG: Firebase Initialization - cred_path: {cred_path}, has_json: {bool(cred_json)}, project_id: {project_id}")
     
     if cred_path and os.path.exists(cred_path):
         cred = credentials.Certificate(cred_path)
         firebase_admin.initialize_app(cred)
-        print("✅ Firebase Admin Initialized with Service Account")
+        print("✅ Firebase Admin Initialized with Service Account File")
+    elif cred_json:
+        try:
+            import json
+            cred_dict = json.loads(cred_json)
+            cred = credentials.Certificate(cred_dict)
+            firebase_admin.initialize_app(cred)
+            print("✅ Firebase Admin Initialized with Service Account JSON")
+        except Exception as json_e:
+            print(f"❌ Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON: {json_e}")
+            raise json_e
     elif project_id:
         # Set project ID in environment as well for some SDK features
         os.environ['GOOGLE_CLOUD_PROJECT'] = project_id
-        # Initialize with just the Project ID (useful for token verification)
+        # Initialize with just the Project ID
         firebase_admin.initialize_app(options={'projectId': project_id})
         print(f"✅ Firebase Admin Initialized with Project ID: {project_id}")
     else:
-        # Fallback to default
-        print("⚠️ No Firebase credentials or Project ID found. Attempting Default Credentials (ADC)...")
+        # Fallback to default (ADC)
         firebase_admin.initialize_app()
         print("✅ Firebase Admin Initialized with Default Credentials")
 except Exception as e:
