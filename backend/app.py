@@ -308,6 +308,19 @@ def firebase_sync():
                     location='Remote'
                 )
         
+        # 1.5 ENSURE PROFILE EXISTS (Resilience for existing users)
+        if user.get('role', 'candidate') == 'candidate':
+            existing_profile = CandidateProfileModel.find_by_user_id(str(user['_id']))
+            if not existing_profile:
+                print(f"DEBUG: Creating missing profile for existing user {user['email']}")
+                CandidateProfileModel.create(
+                    user_id=str(user['_id']),
+                    full_name=name or user.get('email', '').split('@')[0],
+                    experience_level='entry',
+                    target_role='Software Engineer',
+                    location='Remote'
+                )
+        
         # Double check user exists now
         if not user:
              return jsonify({'error': 'Failed to create/find user'}), 500
@@ -536,7 +549,8 @@ def candidate_profile():
             
             # Re-fetch to confirm and return updated object
             updated_profile = CandidateProfileModel.find_by_user_id(user_id)
-            updated_profile['_id'] = str(updated_profile['_id'])
+            if updated_profile:
+                updated_profile['_id'] = str(updated_profile['_id'])
             
             return jsonify({
                 'message': 'Profile updated successfully',
