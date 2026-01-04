@@ -14,8 +14,14 @@ try:
     MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
     DATABASE_NAME = os.getenv('DATABASE_NAME', 'pathway')
 
-    # Try quick connection
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
+    # Try connection with certifi for SSL robustness
+    try:
+        import certifi
+        ca = certifi.where()
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000, tlsCAFile=ca)
+    except ImportError:
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
+
     client.server_info() # Trigger connection check
     db = client[DATABASE_NAME]
     print("✅ Connected to MongoDB")
@@ -34,7 +40,14 @@ except Exception as e:
                 if ':' in auth:
                     user, pwd = auth.split(':', 1)
                     MONGO_URI = f"{prefix}://{quote_plus(user)}:{quote_plus(pwd)}@{server}"
-                    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
+                    
+                    # Retry with certifi
+                    try:
+                        import certifi
+                        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000, tlsCAFile=certifi.where())
+                    except ImportError:
+                        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
+                        
                     client.server_info()
                     db = client[DATABASE_NAME]
                     print("✅ Connected to MongoDB (Auto-Escaped)")

@@ -17,3 +17,5 @@ scikit-learn
 gunicorn
 bcrypt
 firebase-admin
+certifi
+dnspython
