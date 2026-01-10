@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CheckCircleIcon, XCircleIcon, ExclamationTriangleIcon, LightBulbIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
+import getApiUrl from '../../lib/api';
 
 export default function JobDetailModal({ job, open, onClose }) {
     const { user, token } = useAuth();
@@ -50,7 +51,7 @@ export default function JobDetailModal({ job, open, onClose }) {
         body.append('job_description', job.description || '');
 
         try {
-            const res = await fetch(`/api/jobs/${job.job_id || job._id}/resume_match`, {
+            const res = await fetch(getApiUrl(`/api/jobs/${job.job_id || job._id}/resume_match`), {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body
@@ -74,7 +75,7 @@ export default function JobDetailModal({ job, open, onClose }) {
     const handleApply = async () => {
         setApplying(true);
         try {
-            const res = await fetch(`/api/jobs/${job.job_id || job._id}/apply`, {
+            const res = await fetch(getApiUrl(`/api/jobs/${job.job_id || job._id}/apply`), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export default function JobDetailModal({ job, open, onClose }) {
             };
             console.log("Simulating with payload:", payload);
 
-            const res = await fetch('/api/simulate', {
+            const res = await fetch(getApiUrl('/api/simulate'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

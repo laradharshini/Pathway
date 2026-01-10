@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
+import getApiUrl from '../../lib/api';
 import JobCard from '../jobs/JobCard';
 import JobDetailModal from '../jobs/JobDetailModal';
 import {
@@ -45,7 +46,7 @@ export default function Dashboard() {
                 // Use the correct endpoint for recommendations (simulated or real)
                 // Note: The previous code used /api/jobs/search or similar. 
                 // Ensuring we hit an endpoint that exists or falling back to search
-                let res = await fetch('/api/jobs/search?limit=6', {
+                let res = await fetch(getApiUrl('/api/jobs/search?limit=6'), {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 

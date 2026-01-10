@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import getApiUrl from '../../lib/api';
 import AuthLayout from './AuthLayout';
 import { BriefcaseIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/solid';
 
@@ -43,7 +44,7 @@ export default function ProfileSetup() {
         }
 
         try {
-            const res = await fetch('/api/candidate/profile', {
+            const res = await fetch(getApiUrl('/api/candidate/profile'), {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

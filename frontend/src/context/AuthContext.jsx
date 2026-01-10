@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { auth } from '../lib/firebase';
+import getApiUrl from '../lib/api';
 import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                     localStorage.setItem('token', idToken);
 
                     // Synce with backend/Fetch profile
-                    const res = await fetch('/api/auth/firebase-sync', {
+                    const res = await fetch(getApiUrl('/api/auth/firebase-sync'), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

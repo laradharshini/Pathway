@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ArrowPathIcon, BookOpenIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
+import getApiUrl from '../../lib/api';
 
 export default function SkillGaps() {
     const { token, user } = useAuth();
@@ -10,7 +11,7 @@ export default function SkillGaps() {
     useEffect(() => {
         const analyzeGaps = async () => {
             try {
-                const res = await fetch('/api/jobs/recommendations', {
+                const res = await fetch(getApiUrl('/api/jobs/recommendations'), {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error("Failed to fetch jobs");

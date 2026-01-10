@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Tab } from '@headlessui/react';
+import getApiUrl from '../../lib/api';
 import {
     CheckCircleIcon, XCircleIcon, PuzzlePieceIcon,
     BugAntIcon, PlayIcon, BeakerIcon,
@@ -52,9 +53,9 @@ export default function GameHub() {
 
         try {
             const [qData, bData, sData] = await Promise.all([
-                fetchSafe('/api/games/trivia'),
-                fetchSafe('/api/games/bugs'),
-                fetchSafe('/api/games/scenario')
+                fetchSafe(getApiUrl('/api/games/trivia')),
+                fetchSafe(getApiUrl('/api/games/bugs')),
+                fetchSafe(getApiUrl('/api/games/scenario'))
             ]);
 
             setQuestions(qData || []);
@@ -80,7 +81,7 @@ export default function GameHub() {
         setLoadingAi(true);
         setAiResult(null);
         try {
-            const res = await fetch(`/api/games/ai-lab/challenge?skill=${skill}`, {
+            const res = await fetch(getApiUrl(`/api/games/ai-lab/challenge?skill=${skill}`), {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -96,7 +97,7 @@ export default function GameHub() {
     const runAiEvaluation = async () => {
         setEvaluating(true);
         try {
-            const res = await fetch('/api/games/ai-lab/evaluate', {
+            const res = await fetch(getApiUrl('/api/games/ai-lab/evaluate'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

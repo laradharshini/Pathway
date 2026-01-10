@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import getApiUrl from '../../lib/api';
 import AuthLayout from './AuthLayout';
 import { BriefcaseIcon } from '@heroicons/react/24/solid';
 
@@ -73,7 +74,7 @@ export default function Login() {
                         provider: provider
                     };
 
-                    const response = await fetch('http://localhost:5000/api/auth/social-mock', {
+                    const response = await fetch(getApiUrl('/api/auth/social-mock'), {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)

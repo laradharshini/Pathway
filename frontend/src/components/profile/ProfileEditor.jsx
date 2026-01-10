@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, PlusIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
+import getApiUrl from '../../lib/api';
 
 export default function ProfileEditor({ open, onClose, onSave }) {
     const { user, token, logout, updateUser } = useAuth();
@@ -27,7 +28,7 @@ export default function ProfileEditor({ open, onClose, onSave }) {
             // but for editing we might want to fetch fresh to be safe
             const fetchProfile = async () => {
                 try {
-                    const res = await fetch('/api/candidate/profile', {
+                    const res = await fetch(getApiUrl('/api/candidate/profile'), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     if (res.ok) {
@@ -88,7 +89,7 @@ export default function ProfileEditor({ open, onClose, onSave }) {
         setLoading(true);
         console.log("DEBUG: Saving profile...", profile);
         try {
-            const res = await fetch('/api/candidate/profile', {
+            const res = await fetch(getApiUrl('/api/candidate/profile'), {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

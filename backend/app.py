@@ -70,7 +70,13 @@ data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend', 'dist')
 
 app = Flask(__name__, static_folder=frontend_path, static_url_path='')
-CORS(app)
+
+# Configure CORS to allow requests from Firebase Hosting
+firebase_url = os.getenv('FIREBASE_HOSTING_URL')
+if firebase_url:
+    CORS(app, origins=[firebase_url, "http://localhost:5173", "http://127.0.0.1:5173"])
+else:
+    CORS(app)
 
 # JWT Configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'dev-secret-change-in-production')

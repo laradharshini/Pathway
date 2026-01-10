@@ -4,6 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { PaperAirplaneIcon, XMarkIcon, SparklesIcon, BriefcaseIcon } from '@heroicons/react/24/solid'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../context/AuthContext'
+import getApiUrl from '../../lib/api';
 
 import { useChat } from '../../context/ChatContext';
 
@@ -36,7 +37,7 @@ export default function ChatAssistant({ open, onClose }) {
         setLoading(true)
 
         try {
-            const res = await fetch('/api/chat', {
+            const res = await fetch(getApiUrl('/api/chat'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export default function ChatAssistant({ open, onClose }) {
         setLoading(true)
 
         try {
-            const res = await fetch('/api/chat', {
+            const res = await fetch(getApiUrl('/api/chat'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

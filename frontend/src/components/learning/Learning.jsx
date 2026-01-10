@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { AcademicCapIcon, BookOpenIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
+import getApiUrl from '../../lib/api';
 
 export default function Learning() {
     const { token, user } = useAuth();
@@ -11,7 +12,7 @@ export default function Learning() {
         const fetchLearningPaths = async () => {
             try {
                 // Reuse intelligence from jobs to know what to learn
-                const res = await fetch('/api/jobs/recommendations', {
+                const res = await fetch(getApiUrl('/api/jobs/recommendations'), {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error("Failed to load learning data");

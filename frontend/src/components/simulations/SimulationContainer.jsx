@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import getApiUrl from '../../lib/api';
 import SimulationDashboard from './SimulationDashboard';
 import SimulationSetup from './SimulationSetup';
 import SimulationTask from './SimulationTask';
@@ -21,7 +22,7 @@ export default function SimulationContainer() {
     const fetchRecommendation = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/simulations/recommendation', {
+            const res = await fetch(getApiUrl('/api/simulations/recommendation'), {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -40,7 +41,7 @@ export default function SimulationContainer() {
     const handleViewSim = async (simId) => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/simulations/${simId}`, {
+            const res = await fetch(getApiUrl(`/api/simulations/${simId}`), {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -59,7 +60,7 @@ export default function SimulationContainer() {
 
     const startSimulation = async (simId) => {
         try {
-            const res = await fetch(`/api/simulations/${simId}/start`, {
+            const res = await fetch(getApiUrl(`/api/simulations/${simId}/start`), {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -77,7 +78,7 @@ export default function SimulationContainer() {
 
     const submitSimulation = async (attemptId, decisions, justification) => {
         try {
-            const res = await fetch(`/api/simulations/${attemptId}/submit`, {
+            const res = await fetch(getApiUrl(`/api/simulations/${attemptId}/submit`), {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

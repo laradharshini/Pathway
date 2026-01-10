@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import JobCard from './JobCard';
 import JobDetailModal from './JobDetailModal';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import getApiUrl from '../../lib/api';
 
 export default function Jobs() {
     const { token } = useAuth();
@@ -16,7 +17,7 @@ export default function Jobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const res = await fetch('/api/jobs/search', {
+                const res = await fetch(getApiUrl('/api/jobs/search'), {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
